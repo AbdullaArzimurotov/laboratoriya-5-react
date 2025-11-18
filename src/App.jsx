@@ -1,35 +1,33 @@
-// src/App.jsx
 import React, { useState } from 'react';
-import { newsData } from './data';
 import NewsList from './components/NewsList';
 import NewsEditor from './components/NewsEditor';
 import './App.css';
 
 function App() {
-  // 3. Asosiy komponentda holat yaratish (tanlangan yangilik uchun)
-  const [selectedNews, setSelectedNews] = useState(null);
+  // Endi faqat tanlangan yangilikning ID'sini saqlaymiz
+  const [selectedNewsId, setSelectedNewsId] = useState(null);
 
-  // Yangilik tanlanganda holatni yangilaydigan funksiya
-  const handleSelectNews = (news) => {
-    setSelectedNews(news);
+  // Bu funksiya NewsList'dan yangilik ID'sini qabul qiladi
+  const handleNewsSelect = (newsId) => {
+    setSelectedNewsId(newsId);
   };
 
-  // Ro'yxatga qaytish uchun holatni tozalaydigan funksiya
+  // Bu funksiya NewsEditor'dan orqaga qaytish signalini qabul qiladi
   const handleBackToList = () => {
-    setSelectedNews(null);
+    setSelectedNewsId(null);
   };
 
   return (
-    <>
-      {/* 6. Shartli renderlash: agar yangilik tanlangan bo'lsa, Editor'ni ko'rsat, aks holda List'ni */}
-      {selectedNews ? (
-        // 5. Yangilikni batafsil ko'rsatuvchi komponent
-        <NewsEditor news={selectedNews} onBack={handleBackToList} />
+    <div className="app-container">
+      <h1>Новостной портал</h1>
+      {selectedNewsId ? (
+        // Agar ID tanlangan bo'lsa, NewsEditor'ni ko'rsatamiz va unga ID'ni beramiz
+        <NewsEditor newsId={selectedNewsId} onBack={handleBackToList} />
       ) : (
-        // 4. Yangiliklar ro'yxatini (slayder) ko'rsatuvchi komponent
-        <NewsList news={newsData} onNewsSelect={handleSelectNews} />
+        // Agar ID tanlanmagan bo'lsa, NewsList'ni ko'rsatamiz
+        <NewsList onNewsSelect={handleNewsSelect} />
       )}
-    </>
+    </div>
   );
 }
 
